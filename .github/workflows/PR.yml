@@ -1,0 +1,25 @@
+name: PR Testing
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - release
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the project
+        uses: actions/checkout@v4
+      - name: Download Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+      - name: Install yarn
+        run: npm i -g yarn
+      - name: Run yarn
+        run: yarn
+      - name: Test the application
+        run: yarn test

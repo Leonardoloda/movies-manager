@@ -1,0 +1,87 @@
+service: movies-manager
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt: [MoviesTable, Arn]
+            - Fn::GetAtt: [TestTable, Arn]
+
+useDotenv: true
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-dotenv-plugin
+  - serverless-offline
+
+resources:
+  Resources:
+    MoviesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:MOVIES_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    TestTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:TEST_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+functions:
+  createMovie:
+    handler: index.createMovie
+    events:
+      - httpApi:
+          path: /movie
+          method: post
+  readMovies:
+    handler: index.readMovies
+    events:
+      - httpApi:
+          path: /movie
+          method: get
+  readMovie:
+    handler: index.readMovie
+    events:
+      - httpApi:
+          path: /movie/{id}
+          method: get
+  updateMovie:
+    handler: index.updateMovie
+    events:
+      - httpApi:
+          path: /movie/{id}
+          method: put
+  deleteMovie:
+    handler: index.deleteMovie
+    events:
+      - httpApi:
+          path: /movie/{id}
+          method: delete
