@@ -18,12 +18,19 @@ jobs:
     steps:
       - name: Download the project
         uses: actions/checkout@v4
+      - name: Verify  action
+        run: |
+          echo "repository variable : $SECRET_GITHUB_IAM_ROLE"
+          echo "organization variable : $AWS_REGION"
+        env:
+          SECRET_GITHUB_IAM_ROLE: ${{ secrets.SECRET_GITHUB_IAM_ROLE }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: ${{ secrets.SECRET_GITHUB_IAM_ROLE }}
+          role-to-assume: ${{secrets.SECRET_GITHUB_IAM_ROLE}}
           role-session-name: github-role
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{vars.AWS_REGION}}
       - name: Download Node
         uses: actions/setup-node@v3
         with:
