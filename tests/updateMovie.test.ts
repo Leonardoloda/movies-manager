@@ -4,7 +4,7 @@ import type { Movie } from "../src/model/Movie";
 import { v4 as uuid } from "uuid";
 
 describe("updateMovie", () => {
-  let movie: Movie = {
+  const movie: Movie = {
     id: uuid(),
     title: "title",
     director: "director",
