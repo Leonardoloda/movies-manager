@@ -6,4 +6,5 @@ module.exports = {
   resetModules: true,
   maxConcurrency: 1,
   maxWorkers: 1,
+  setupFiles: ["./jest.setup.ts"],
 };
