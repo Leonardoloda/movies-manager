@@ -28,13 +28,16 @@ export type MovieRepository = {
   deleteOne: (id: string) => Promise<void>;
 };
 
+const parseBoolean = (boolean: string): boolean => (boolean === "true" ? true : false);
+
 const client = new DynamoDBClient({
-  credentials: fromIni({
-    profile: "Personal",
+  ...(parseBoolean(process.env.LOCAL) && {
+    credentials: fromIni({
+      profile: "Personal",
+    }),
   }),
   region: "us-east-1",
 });
-
 const create = withParam<DynamoDBClient>(client, async (movie: Movie) => {
   const createCommand = new PutItemCommand({
     TableName: process.env.MOVIES_TABLE,
