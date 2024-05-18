@@ -6,6 +6,7 @@
   "scripts": {
     "start:offline": "serverless offline",
     "deploy": "serverless deploy --aws-profile=Personal --verbose --stage=dev",
+    "deploy:stage": "serverless deploy --verbose --stage=prod",
     "test": "jest --verbose --coverage",
     "lint": "eslint **/*.ts"
   },
