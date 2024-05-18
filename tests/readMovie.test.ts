@@ -52,6 +52,6 @@ describe("readMovie", () => {
     });
 
     expect(response.statusCode).toEqual(200);
-    expect(JSON.parse(response.body)).toEqual({});
+    expect(JSON.parse(response.body)).toEqual(null);
   });
 });
