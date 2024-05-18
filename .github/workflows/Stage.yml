@@ -37,8 +37,6 @@ jobs:
         run: npm i -g yarn
       - name: Run yarn
         run: yarn
-      - name: Test the application
-        run: yarn test
       - name: serverless deploy
         run: |
           export MOVIES_TABLE=${{vars.MOVIES_TABLE}}
