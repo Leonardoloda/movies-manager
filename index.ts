@@ -54,7 +54,7 @@ const deleteMovie = async (event: Partial<APIGatewayEvent>) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({}),
+    body: JSON.stringify({ message: "Movie deleted successfully " }),
   };
 };
 
