@@ -6,6 +6,7 @@
   "scripts": {
     "start:offline": "serverless offline",
     "deploy": "serverless deploy --aws-profile=Personal --verbose --stage=dev",
+    "deploy:stage": "serverless deploy --verbose --stage=stage",
     "test": "jest --verbose --coverage",
     "lint": "eslint **/*.ts"
   },
@@ -30,6 +31,7 @@
     "@aws-sdk/client-dynamodb": "^3.577.0",
     "@aws-sdk/util-dynamodb": "^3.577.0",
     "@types/aws-lambda": "^8.10.137",
+    "serverless": "^3.38.0",
     "uuid": "^9.0.1"
   }
 }
