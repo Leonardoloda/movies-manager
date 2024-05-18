@@ -29,9 +29,6 @@ export type MovieRepository = {
 };
 
 const client = new DynamoDBClient({
-  credentials: fromIni({
-    profile: "Personal",
-  }),
   region: "us-east-1",
 });
 
