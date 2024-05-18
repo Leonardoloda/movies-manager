@@ -1,0 +1,45 @@
+name: PR Testing
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: Development
+    steps:
+      - name: Download the project
+        uses: actions/checkout@v4
+      - name: Verify  action
+        run: |
+          echo "repository variable : $SECRET_GITHUB_IAM_ROLE"
+          echo "organization variable : $AWS_REGION"
+        env:
+          SECRET_GITHUB_IAM_ROLE: ${{ secrets.SECRET_GITHUB_IAM_ROLE }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{secrets.SECRET_GITHUB_IAM_ROLE}}
+          role-session-name: github-role
+          aws-region: ${{vars.AWS_REGION}}
+      - name: Download Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+      - name: Install yarn
+        run: npm i -g yarn
+      - name: Run yarn
+        run: yarn
+      - name: Test the application
+        run: yarn test
+      - name: serverless deploy
+        uses: serverless/github-action@v3.2
+        with:
+          args: deploy
