@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { Movie } from "../src/model/Movie";
 
 describe("readMovie", () => {
-  let movie: Movie = {
+  const movie: Movie = {
     id: uuid(),
     title: "title",
     director: "director",
@@ -52,6 +52,6 @@ describe("readMovie", () => {
     });
 
     expect(response.statusCode).toEqual(200);
-    expect(JSON.parse(response.body)).toEqual({});
+    expect(JSON.parse(response.body)).toEqual(null);
   });
 });

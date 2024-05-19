@@ -2,12 +2,18 @@ import { MovieRepository } from "../database/movieRepository";
 import type { Movie } from "../model/Movie";
 import { validateId, validateMovie } from "../utils/validators";
 
+export type OperationResult = {
+  message: string;
+  payload?: {
+    [key: string]: any;
+  };
+};
 export interface MovieOperations {
   createMovie: (movie: Partial<Movie>) => Promise<Movie>;
   readMovie: (id: string) => Promise<Movie>;
   readMovies: () => Promise<Movie[]>;
   updateMovie: (id: string, movie: Partial<Movie>) => Promise<Movie>;
-  deleteMovie: (id: string) => Promise<boolean>;
+  deleteMovie: (id: string) => Promise<OperationResult>;
 }
 
 export const movieController = (movieRepository: Partial<MovieRepository>): MovieOperations => ({
@@ -24,7 +30,7 @@ export const movieController = (movieRepository: Partial<MovieRepository>): Movi
 
     await movieRepository.deleteOne(id);
 
-    return false;
+    return { message: "Movie deleted successfully" };
   },
 
   async readMovie(id) {

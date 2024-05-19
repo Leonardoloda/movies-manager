@@ -1,38 +1,31 @@
 import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
-import { movieController } from "./src/controllers/MovieOperations";
+import { movieController } from "./src/controllers/movieController";
 import { movieRepository } from "./src/database/movieRepository";
+import { createResponse, parseInput } from "./src/utils/httpTool";
+import { Movie } from "./src/model/Movie";
 
 const readMovie = async (event: Partial<APIGatewayEvent>): Promise<APIGatewayProxyResult> => {
   const { id } = event.pathParameters;
 
   const movie = await movieController(movieRepository).readMovie(id);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      ...movie,
-    }),
-  };
+  return createResponse(200, movie);
 };
 
 const readMovies = async (): Promise<APIGatewayProxyResult> => {
   const movies = await movieController(movieRepository).readMovies();
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify([...movies]),
-  };
+  return createResponse(200, [...movies]);
 };
 
 const createMovie = async ({ body }): Promise<APIGatewayProxyResult> => {
-  const movie = typeof body === "string" ? JSON.parse(body) : body;
+  const movie = parseInput<Movie>(body);
+
+  console.info("Movie: ", movie);
 
   const createdMovie = await movieController(movieRepository).createMovie(movie);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify(createdMovie),
-  };
+  return createResponse(200, createdMovie);
 };
 
 const updateMovie = async (event: Partial<APIGatewayEvent>) => {
@@ -41,21 +34,15 @@ const updateMovie = async (event: Partial<APIGatewayEvent>) => {
 
   const updatedMovie = await movieController(movieRepository).updateMovie(id, movie);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify(updatedMovie),
-  };
+  return createResponse(200, updatedMovie);
 };
 
 const deleteMovie = async (event: Partial<APIGatewayEvent>) => {
   const { id } = event.pathParameters;
 
-  await movieController(movieRepository).deleteMovie(id);
+  const result = await movieController(movieRepository).deleteMovie(id);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: "Movie deleted successfully " }),
-  };
+  return createResponse(200, result);
 };
 
 export { createMovie, readMovie, updateMovie, deleteMovie, readMovies };
