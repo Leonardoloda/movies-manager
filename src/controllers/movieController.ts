@@ -13,7 +13,7 @@ export interface MovieOperations {
   readMovie: (id: string) => Promise<Movie>;
   readMovies: () => Promise<Movie[]>;
   updateMovie: (id: string, movie: Partial<Movie>) => Promise<Movie>;
-  deleteMovie: (id: string) => Promise<boolean>;
+  deleteMovie: (id: string) => Promise<OperationResult>;
 }
 
 export const movieController = (movieRepository: Partial<MovieRepository>): MovieOperations => ({
@@ -30,7 +30,7 @@ export const movieController = (movieRepository: Partial<MovieRepository>): Movi
 
     await movieRepository.deleteOne(id);
 
-    return true;
+    return { message: "Movie deleted successfully" };
   },
 
   async readMovie(id) {

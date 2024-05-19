@@ -40,9 +40,9 @@ const updateMovie = async (event: Partial<APIGatewayEvent>) => {
 const deleteMovie = async (event: Partial<APIGatewayEvent>) => {
   const { id } = event.pathParameters;
 
-  await movieController(movieRepository).deleteMovie(id);
+  const result = await movieController(movieRepository).deleteMovie(id);
 
-  return createResponse(200, { message: "Movie deleted successfully " });
+  return createResponse(200, result);
 };
 
 export { createMovie, readMovie, updateMovie, deleteMovie, readMovies };
