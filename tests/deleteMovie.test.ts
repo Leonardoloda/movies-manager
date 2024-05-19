@@ -34,12 +34,14 @@ describe("deleteMovie", () => {
   });
 
   it("should delete a movie from the database", async () => {
-    await deleteMovie({
+    const response = await deleteMovie({
       pathParameters: {
         id: movie.id,
       },
     });
 
+    expect(response.statusCode).toBe(200);
+    expect(JSON.parse(response.body).message).toBe("Movie deleted successfully");
     expect(await movieRepository.getOne(movie.id)).toBeFalsy();
   });
 });
