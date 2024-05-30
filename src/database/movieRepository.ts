@@ -38,6 +38,7 @@ const client = new DynamoDBClient({
   }),
   region: "us-east-1",
 });
+
 const create = withParam<DynamoDBClient>(client, async (movie: Movie) => {
   const createCommand = new PutItemCommand({
     TableName: process.env.MOVIES_TABLE,

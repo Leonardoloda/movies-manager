@@ -1,4 +1,25 @@
-export type GENRE = "FICTION" | "ACTION" | "THRILLER";
+export type GENRE =
+  | "FICTION"
+  | "ACTION"
+  | "THRILLER"
+  | "COMEDY"
+  | "DRAMA"
+  | "HORROR"
+  | "ROMANCE"
+  | "ANIMATION"
+  | "FANTASY"
+  | "ADVENTURE"
+  | "DOCUMENTARY"
+  | "MUSICAL"
+  | "SCI_FI"
+  | "CRIME"
+  | "MYSTERY"
+  | "WAR"
+  | "WESTERN"
+  | "HISTORICAL"
+  | "SUPERHERO"
+  | "BIOPIC"
+  | "SPORTS";
 
 export type Movie = {
   id?: string;
