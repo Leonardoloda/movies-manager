@@ -1,11 +1,11 @@
 import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 import { movieController } from "./src/controllers/movieController";
 import { movieRepository } from "./src/database/movieRepository";
-import { createResponse, parseInput } from "./src/utils/httpTool";
+import { createResponse, getPathParameter, parseInput } from "./src/utils/httpTool";
 import { Movie } from "./src/model/Movie";
 
 const readMovie = async (event: Partial<APIGatewayEvent>): Promise<APIGatewayProxyResult> => {
-  const { id } = event.pathParameters;
+  const id = getPathParameter<string>(event, "id");
 
   const movie = await movieController(movieRepository).readMovie(id);
 
@@ -21,15 +21,13 @@ const readMovies = async (): Promise<APIGatewayProxyResult> => {
 const createMovie = async ({ body }): Promise<APIGatewayProxyResult> => {
   const movie = parseInput<Movie>(body);
 
-  console.info("Movie: ", movie);
-
   const createdMovie = await movieController(movieRepository).createMovie(movie);
 
   return createResponse(200, createdMovie);
 };
 
 const updateMovie = async (event: Partial<APIGatewayEvent>) => {
-  const { id } = event.pathParameters;
+  const id = getPathParameter<string>(event, "id");
   const movie = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
 
   const updatedMovie = await movieController(movieRepository).updateMovie(id, movie);
@@ -38,7 +36,7 @@ const updateMovie = async (event: Partial<APIGatewayEvent>) => {
 };
 
 const deleteMovie = async (event: Partial<APIGatewayEvent>) => {
-  const { id } = event.pathParameters;
+  const id = getPathParameter<string>(event, "id");
 
   const result = await movieController(movieRepository).deleteMovie(id);
 
